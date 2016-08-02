@@ -17,38 +17,57 @@ HexIK::HexIK (void) {
     cout << "HexIK test" << endl;
 }
 
-ArmPos HexIK::TranslateIK(int x, int y, int z) {
-    ArmPos arm;
-    
-    arm.coxa = 0;
-    arm.femur = 0;
-    arm.tibia = 0;
-    
-    double gamma = this->getGamma(x, z);
+ArmAngles HexIK::TranslateIK (int x, int y, int z) {
+    ArmAngles arm;
+
     double l = this->getL(y);
-    double alpha = this->getAlpha(l);
-    double beta = this->getBeta(l);
     
-    cout << "gamma " << gamma << endl;
-    cout << "alpha " << alpha << endl;
-    cout << "beta " << beta << endl;
+    arm.gamma = this->getGamma(x, y);
+    arm.alpha = this->getAlpha(l);
+    arm.beta = this->getBeta(l);
+    
+    cout << "gamma " << arm.gamma << endl;
+    cout << "alpha " << arm.alpha << endl;
+    cout << "beta " << arm.beta << endl;
     
     return arm;
 }
 
-void HexIK::SetArmLengths(ArmLengths armLengthsArg) {
+ArmPos HexIK::TranslateFK (ArmAngles angles) {
+    ArmPos pos;
+    
+//    angles.gamma = this->toRadians(angles.gamma);
+//    angles.alpha = this->toRadians(angles.alpha);
+//    angles.beta = this->toRadians(angles.beta);
+    // (coxa plus (femur * alpha) + (tibia * beta)) * gamma
+    angles.alpha -= 90;
+    angles.beta -= angles.alpha;
+    double l = armLengths.coxa + (cos(angles.alpha) * armLengths.femur) + (sin(angles.beta) * armLengths.tibia);
+    
+    pos.y = cos(angles.gamma) * l;
+    pos.x = sin(angles.gamma) * l;
+    pos.z = armLengths.zOffset + (sin(angles.alpha) * armLengths.femur) - (cos(angles.beta) * armLengths.tibia);
+    
+    return pos;
+}
+
+void HexIK::SetArmLengths (ArmLengths armLengthsArg) {
     armLengths = armLengthsArg;
 }
 
-double HexIK::getGamma (int x, int z) {
-    return this->toDegrees(atan(x / z));
+double HexIK::getGamma (int x, int y) {
+    return this->toDegrees(atan(x / y));
 }
 
 double HexIK::toDegrees (double radius) {
     return radius  * 180 / M_PI;
 }
 
-double HexIK::getL(int y) {
+double HexIK::toRadians (double degrees) {
+    return degrees * M_PI / 180;
+}
+
+double HexIK::getL (int y) {
     return sqrt(pow(armLengths.zOffset, 2) + pow(y - armLengths.coxa, 2));
 }
 

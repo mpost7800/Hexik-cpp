@@ -10,10 +10,10 @@
 #define HexIK_ArmLengths_h
 
 struct ArmLengths {
-    int coxa;
-    int femur;
-    int tibia;
-    int zOffset;
+    double coxa;
+    double femur;
+    double tibia;
+    double zOffset;
 };
 
 #endif

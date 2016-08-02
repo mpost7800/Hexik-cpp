@@ -11,21 +11,24 @@
 
 #include "ArmPos.h"
 #include "ArmLengths.h"
+#include "ArmAngles.h"
 
 class HexIK {
     
 public:
     HexIK();
-    ArmPos TranslateIK(int x, int y, int z);
-    void SetArmLengths(ArmLengths armLengths);
+    ArmAngles TranslateIK (int x, int y, int z);
+    ArmPos TranslateFK (ArmAngles pos);
+    void SetArmLengths (ArmLengths armLengths);
     
 private:
     ArmLengths armLengths;
-    double getGamma(int x, int z);
-    double toDegrees(double radius);
-    double getAlpha(double l);
-    double getBeta(double l);
-    double getL(int y);
+    double getGamma (int x, int z);
+    double toDegrees (double radius);
+    double toRadians (double degrees);
+    double getAlpha (double l);
+    double getBeta (double l);
+    double getL (int y);
 };
 
 #endif

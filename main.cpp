@@ -20,11 +20,13 @@ int main(int argc, const char * argv[]) {
     armConf.coxa = 0;
     armConf.femur = 5;
     armConf.tibia = 10;
-    armConf.zOffset = 3;
+    armConf.zOffset = 0;
     
     arm.SetArmLengths(armConf);
     
-    ArmPos armPos = arm.TranslateIK(0, 10, 5);
+    ArmAngles armAngles = arm.TranslateIK(0, 10, 5); // xyz
+    
+    ArmPos pos = arm.TranslateFK(armAngles);
     
     return 0;
 }

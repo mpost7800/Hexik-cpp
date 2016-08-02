@@ -10,9 +10,9 @@
 #define HexIK_ArmPos_h
 
 struct ArmPos {
-    int coxa;
-    int femur;
-    int tibia;
+    double x;
+    double y;
+    int z;
 };
 
 #endif
