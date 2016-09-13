@@ -40,13 +40,27 @@ ArmPos HexIK::TranslateFK (ArmAngles angles) {
 //    angles.alpha = this->toRadians(angles.alpha);
 //    angles.beta = this->toRadians(angles.beta);
     // (coxa plus (femur * alpha) + (tibia * beta)) * gamma
-    angles.alpha -= 90;
-    angles.beta -= angles.alpha;
+    angles.beta = this->toRadians(angles.beta - (angles.alpha - 90));
+    angles.alpha = this->toRadians(angles.alpha - 90); // Add 90 to reach 0-180 degree of servo
+    angles.gamma = this->toRadians(angles.gamma);
     double l = armLengths.coxa + (cos(angles.alpha) * armLengths.femur) + (sin(angles.beta) * armLengths.tibia);
+    
+    cout << "L:" << l << endl;
+    cout << "Angle alpha:" << this->toDegrees(angles.alpha) << endl;
+    cout << "Angle beta:" << this->toDegrees(angles.beta) << endl;
+    cout << "Coxa:" << armLengths.coxa << endl;
+    cout << "Femur length:" << armLengths.femur << endl;
+    cout << "Femur calc:" << (cos(angles.alpha) * armLengths.femur) << endl;
+    cout << "Tibia length:" << armLengths.tibia << endl;
+    cout << "Tibia calc:" << (sin(angles.beta) * armLengths.tibia) << endl;
     
     pos.y = cos(angles.gamma) * l;
     pos.x = sin(angles.gamma) * l;
-    pos.z = armLengths.zOffset + (sin(angles.alpha) * armLengths.femur) - (cos(angles.beta) * armLengths.tibia);
+    pos.z = armLengths.zOffset + (sin(angles.alpha) * armLengths.femur) - (sin(angles.beta) * armLengths.tibia);
+    
+    cout << "FK Y:" << pos.y << endl;
+    cout << "FK X:" << pos.x << endl;
+    cout << "FK Z:" << pos.z << endl;
     
     return pos;
 }
