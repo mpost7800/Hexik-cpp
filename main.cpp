@@ -17,21 +17,21 @@ int main(int argc, const char * argv[]) {
     HexIK arm;
     
     ArmLengths armConf;
-    armConf.coxa = 35;
-    armConf.femur = 61;
-    armConf.tibia = 126;
-    armConf.zOffset = 30;
+    armConf.coxa = 1;
+    armConf.femur = 1;
+    armConf.tibia = 1;
+    armConf.zOffset = 1;
     
     arm.SetArmLengths(armConf);
     
-    ArmAngles armAngles = arm.TranslateIK(0, 192, 0); // xyz
+    ArmAngles armAngles = arm.TranslateIK(0, 2, 0); // xyz
 //    ArmAngles armAngles;
     
-    armAngles.alpha = 125.801;
-    armAngles.beta = 112.78;
-    armAngles.gamma = -10;
+//    armAngles.alpha = 125.801;
+//    armAngles.beta = 112.78;
+//    armAngles.gamma = -10;
     
-    ArmPos pos = arm.TranslateFK(armAngles);
+//    ArmPos pos = arm.TranslateFK(armAngles);
     
     return 0;
 }

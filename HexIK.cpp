@@ -26,6 +26,7 @@ ArmAngles HexIK::TranslateIK (int x, int y, int z) {
     arm.alpha = this->getAlpha(l);
     arm.beta = this->getBeta(l);
     
+    cout << "L " << l << endl;
     cout << "gamma " << arm.gamma << endl;
     cout << "alpha " << arm.alpha << endl;
     cout << "beta " << arm.beta << endl;
@@ -81,13 +82,21 @@ double HexIK::toRadians (double degrees) {
     return degrees * M_PI / 180;
 }
 
+// Checked
 double HexIK::getL (int y) {
     return sqrt(pow(armLengths.zOffset, 2) + pow(y - armLengths.coxa, 2));
 }
 
 double HexIK::getAlpha (double l) {
+    cout << "ALPHA -----------" << endl;
+    cout << "zoffset: " << armLengths.zOffset << endl;
+    cout << "l: " << l << endl;
     double alphaOne = acos(armLengths.zOffset / l);
+    cout << "alpha 1: " << this->toDegrees(alphaOne) << endl;
     double alphaTwo = acos((pow(armLengths.tibia, 2) - pow(armLengths.femur, 2) - pow(l, 2)) / (-2 * armLengths.femur * l));
+    cout << "alpha 2: " << alphaTwo << endl;
+    
+    cout << "END  -----------" << endl;
     
     return this->toDegrees(alphaOne + alphaTwo);
 }
